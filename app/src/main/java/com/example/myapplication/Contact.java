@@ -3,8 +3,13 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
+@Entity
 public class Contact implements Parcelable{
+    @PrimaryKey(autoGenerate = true)
+    private long id;
     private String name;
     private String email;
     private String mobile;
@@ -18,6 +23,14 @@ public class Contact implements Parcelable{
         name = in.readString();
         email = in.readString();
         mobile = in.readString();
+    }
+
+    public long getId(){
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public static final Creator<Contact> CREATOR = new Creator<Contact>() {

@@ -2,8 +2,3 @@
 plugins {
 alias(libs.plugins.android.application) apply false
 }
-
-ext {
-    roomVersion = '1.1.1'
-    archLifecycleVersion = '1.1.1'
-}
