@@ -86,12 +86,27 @@
         android:layout_marginBottom="20dp"
         />
 
-    <Button
-        android:id="@+id/btnSubmit"
+    <LinearLayout
+        android:id="@+id/buttonRow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:onClick="saveContact"
-        android:text="Save contact" />
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btnSubmit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="saveContact"
+            android:text="Save contact"
+            android:backgroundTint="@color/button_save_green" />
+        <Button
+            android:id="@+id/btnDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:text="Delete contact"
+            android:onClick="deleteContact"
+            android:backgroundTint="@color/button_delete_red" />
+    </LinearLayout>
 </RelativeLayout>
