@@ -43,6 +43,20 @@ public class ContactRepository {
         }
     }
     
+    public void delete(Contact contact) {
+        new DeleteAsyncTask().execute(contact);
+    }
+    
+    private class DeleteAsyncTask extends AsyncTask<Contact, Void, Void> {
+        @Override
+        protected Void doInBackground(final Contact... params) {
+            for (Contact contact : params) {
+                contactDao.delete(contact);
+            }
+            return null;
+        }
+    }
+    
     public LiveData<List<Contact>> getAllContacts() {
         return allContacts;
     }

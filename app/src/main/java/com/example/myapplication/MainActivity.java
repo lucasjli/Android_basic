@@ -14,13 +14,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.Observer;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private ArrayList<Contact> contacts = new ArrayList<Contact>();
     private ArrayAdapter<Contact> adapter; private ListView contactListView;
+    private ContactRepository contactRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +48,19 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 contacts.add((Contact) contact);
             }
         } else {
-            contacts.add(new Contact("Joe Bloggs", "joe@bloggs.co.nz", "021123456"));
-            contacts.add(new Contact("Jane Doe", "jane@doe.co.nz", "022123456"));
+            // contacts.add(new Contact("Joe Bloggs", "joe@bloggs.co.nz", "021123456"));
+            // contacts.add(new Contact("Jane Doe", "jane@doe.co.nz", "022123456"));
         }
+
+        contactRepository = new ContactRepository(this);
+        contactRepository.getAllContacts().observe(this, new Observer<List<Contact>>() {
+            @Override
+            public void onChanged(List<Contact> updatedContacts) {
+                // update the contacts list when the database changes
+                adapter.clear();
+                adapter.addAll(updatedContacts);
+            }
+        });
     }
 
     public void saveContact(View view) {
@@ -72,16 +85,41 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             Contact existing = contacts.get(index);
             existing.setEmail(email);
             existing.setPhone(mobile);
+            contactRepository.update(existing);
             Toast.makeText(this, "Updated contact: " + name, Toast.LENGTH_SHORT).show();
         } else {
             // Add new contact
-            contacts.add(newContact);
+            contactRepository.insert(newContact);
             Toast.makeText(this, "Added new contact: " + name, Toast.LENGTH_SHORT).show();
         }
 
-        adapter.notifyDataSetChanged(); // Refresh List
+        // Empty the input box
+        nameField.setText("");
+        emailField.setText("");
+        mobileField.setText("");
     }
 
+    public void deleteContact(View view) {
+        EditText nameField = findViewById(R.id.name);
+        String name = nameField.getText().toString().trim();
+        if (name.isEmpty()) {
+            Toast.makeText(this, "Name cannot be empty", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        // Find contact in ArrayList
+        int index = contacts.indexOf(new Contact(name, "", ""));
+        if (index >= 0) {
+            Contact contactToDelete = contacts.get(index);
+            contactRepository.delete(contactToDelete);
+            Toast.makeText(this, "Deleted contact: " + name, Toast.LENGTH_SHORT).show();
+            // Empty the input box
+            nameField.setText("");
+            ((EditText)findViewById(R.id.email)).setText("");
+            ((EditText)findViewById(R.id.mobile)).setText("");
+        } else {
+            Toast.makeText(this, "Contact not found", Toast.LENGTH_SHORT).show();
+        }
+    }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
