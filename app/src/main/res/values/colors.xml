@@ -4,4 +4,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="button_save_green">#07c160</color>
     <color name="button_delete_red">#fb5151</color>
+    <color name="button_search_color">#a8c7fa</color>
 </resources>

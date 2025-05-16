@@ -19,13 +19,52 @@
         android:gravity="center_horizontal"
         android:text="Edit Contact"
         android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <!-- Top SearchView -->
+    <LinearLayout
+        android:id="@+id/search_bar_row"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/page_title"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp">
+
+        <ImageView
+            android:id="@+id/search_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="?android:attr/actionModeWebSearchDrawable"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="8dp" />
+
+        <EditText
+            android:id="@+id/search_edit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Insert Contact name"
+            android:inputType="textPersonName"
+            android:minHeight="48dp" />
+
+        <Button
+            android:id="@+id/search_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:text="Search"
+            android:layout_marginStart="8dp"
+            android:backgroundTint="@color/button_search_color"
+            android:onClick="onSearchClick" />
+    </LinearLayout>
+
     <EditText
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/email"
-        android:layout_below="@+id/page_title"
-        android:layout_marginTop="20dp"
+        android:layout_below="@+id/search_bar_row"
+        android:layout_marginTop="10dp"
         android:ems="10"
         android:hint="Firstname Lastname"
         android:inputType="textPersonName" />

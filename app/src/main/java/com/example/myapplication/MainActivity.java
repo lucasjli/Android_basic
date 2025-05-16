@@ -22,7 +22,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private ArrayList<Contact> contacts = new ArrayList<Contact>();
-    private ArrayAdapter<Contact> adapter; private ListView contactListView;
+    private ArrayAdapter<Contact> adapter;
+    private ListView contactListView;
     private ContactRepository contactRepository;
 
     @Override
@@ -141,5 +142,39 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public void onSaveInstanceState(Bundle savedState) {
         savedState.putParcelableArrayList("contacts", contacts);
         super.onSaveInstanceState(savedState);
+    }
+
+    public void onSearchClick(View view) {
+        EditText nameSearch = findViewById(R.id.search_edit);
+        String name = nameSearch.getText().toString().trim();
+
+        if (name.isEmpty()) {
+            Toast.makeText(this, "Insert contact name", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // 遍历联系人列表，忽略大小写查找
+        Contact foundContact = null;
+        for (Contact contact : contacts) {
+            if (contact.getName().equalsIgnoreCase(name)) {
+                foundContact = contact;
+                break;
+            }
+        }
+
+        if (foundContact != null) {
+            // 填充联系人信息到编辑框
+            EditText nameField = findViewById(R.id.name);
+            EditText emailField = findViewById(R.id.email);
+            EditText mobileField = findViewById(R.id.mobile);
+
+            nameField.setText(foundContact.getName());
+            emailField.setText(foundContact.getEmail());
+            mobileField.setText(foundContact.getMobile());
+
+            nameSearch.setText("");
+        } else {
+            Toast.makeText(this, "Contact is not exist", Toast.LENGTH_SHORT).show();
+        }
     }
 }
