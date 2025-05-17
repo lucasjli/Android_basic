@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             return;
         }
 
-        // 遍历联系人列表，忽略大小写查找
+        // For loop contact list and ignore case
         Contact foundContact = null;
         for (Contact contact : contacts) {
             if (contact.getName().equalsIgnoreCase(name)) {
@@ -163,11 +163,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
 
         if (foundContact != null) {
-            // 填充联系人信息到编辑框
+            // Get the input field (EditText) from the XML layout by IDs
             EditText nameField = findViewById(R.id.name);
             EditText emailField = findViewById(R.id.email);
             EditText mobileField = findViewById(R.id.mobile);
 
+            // Fill in the contact information in the input box
             nameField.setText(foundContact.getName());
             emailField.setText(foundContact.getEmail());
             mobileField.setText(foundContact.getMobile());
